@@ -6,17 +6,23 @@ for(lib in install.lib){
   install.packages(lib,dependences=TRUE)
 } 
 
-sapply(load.lib,require,character=TRUE)
+suppressMessages(sapply(load.lib,require,character=TRUE))
 
 
 ###### IMPORT DATA / CLEAN DATA / IMPUTE VARIABLES / CREATE NEW VARIABLES 
 
 #INPUT: train.csv   RAW DATA FROM KAGGLE
 #INPUT: test.csv    RAW DATA FROM KAGGLE
-source('~/Stats2_Proj2/BaseVars.R', echo=TRUE)
+source('BaseVars.R', echo=TRUE)
 #OUTPUT: train      RAW DATA LOADED IN WORKSPACE
 #OUTPUT: test       RAW DATA LOADED IN WORKSPACE
-#OUTPUT: train1     CELAN DATA STORED IN WORKSPACE
+#OUTPUT: train1     CLEAN DATA STORED IN WORKSPACE
 #OUTPUT: test1      CLEAN DATA STORED IN WORKSPACE
-#OUTPUT: train2     CELAN DATA STORED IN WORKSPACE, ALL NUMERIC
+#OUTPUT: train2     CLEAN DATA STORED IN WORKSPACE, ALL NUMERIC
 #OUTPUT: test2      CLEAN DATA STORED IN WORKSPACE, ALL NUMERIC
+
+#INPUT:  train2     CLEAN DATA STORED IN WORKSPACE, ALL NUMERIC
+#INPUT:  test2      CLEAN DATA STORED IN WORKSPACE, ALL NUMERIC
+source('KaggelSubmission.R', echo=TRUE)
+#OUTPUT: TitanicLogKaggel     CLEAN DATA STORED IN WORKSPACE, KAGGEL SUBMISSION
+#OUTPUT: titanic_output.csv   OUTPUT FILE FOR KAGGEL SUBMISSION
