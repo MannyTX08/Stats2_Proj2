@@ -6,7 +6,7 @@ for(lib in install.lib){
   install.packages(lib,dependences=TRUE)
 } 
 
-sapply(load.lib,require,character=TRUE)
+suppressWarnings(sapply(load.lib,require,character=TRUE))
 
 # Load train and test csv files from working directory
 # Using Amelia package visualize where we need imputation
@@ -79,7 +79,7 @@ str(full2)
 
 convert.vars <- c('Pclass','Sex','Embarked','Title')
 
-full2[convert.vars] <- lapply(full2[convert.vars], function(x) as.numeric(x))
+full2[convert.vars] <- lapply(full2[convert.vars], function(x) as.numeric(x)) #### This is not working (MER)
 
 # Get back to train data set
 train2 <- full2[!is.na(full2$Survived),]

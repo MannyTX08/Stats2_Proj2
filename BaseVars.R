@@ -1,11 +1,15 @@
 # Load train and test csv files from working directory
 # Using Amelia package visualize where we need imputation
 
-train <- read.csv('~/Stats2_Proj2/Data/train.csv')
-Amelia::missmap(train, main="Missing Values in Raw Data", col = c("black","light blue"))
+par(mfrow=c(1,2))
 
-test <- read.csv('~/Stats2_Proj2/Data/test.csv')
-Amelia::missmap(test, main="Missing Values in Raw Data", col = c("black","light blue"))
+train <- read.csv('Data/train.csv') # Reading from location after clone
+Amelia::missmap(train, main="Missing Values in Train Data", col = c("black","light blue"))
+
+test <- read.csv('Data/test.csv') # Reading from location after clone
+Amelia::missmap(test, main="Missing Values in Test Data", col = c("black","light blue"))
+
+par(mfrow=c(1,1))
 
 # Append test to train for data review and cleaning (result column only valid in train)
 full <- bind_rows(train, test)

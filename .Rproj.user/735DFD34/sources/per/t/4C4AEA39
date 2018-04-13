@@ -12,9 +12,9 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "662BCABF",
+        "cacheKey" : "4B232EA",
         "caption" : "train2",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=train2&cache_key=662BCABF",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=train2&cache_key=4B232EA",
         "displayedObservations" : "891",
         "environment" : "",
         "object" : "train2",
