@@ -37,11 +37,6 @@ table(full$Sex, full$Title)
 sum(is.na(train$Age)) # 177 missing values
 sum(is.na(full$Age))  # 263 missing values in both train and test
 
-# Make variables factors into factors
-factor_vars <- c('PassengerId','Pclass','Sex','Embarked','Title')
-
-full[factor_vars] <- lapply(full[factor_vars], function(x) as.factor(x))
-
 # Create Age as a categorical variable
 #   Be sure to run this BEFORE imputing with mice and rf
 full$AgeBin<-addNA(cut(full$Age, seq(0, 90, by=10)))
@@ -51,6 +46,15 @@ l<-levels(full$AgeBin)[-(length(levels(full$AgeBin)))]
 #    replace <NA> with 'unknown'
 levels(full$AgeBin)<-c(l, 'unknown')
 full$AgeBin[10:35]
+
+# Create a family = siblings + parents/children
+# -Possibly for dimension reducing
+full$Family = full$Parch + full$SibSp
+
+# Make variables factors into factors
+factor_vars <- c('PassengerId','Pclass','Sex','Embarked','Title', 'AgeBin')
+
+full[factor_vars] <- lapply(full[factor_vars], function(x) as.factor(x))
 
 # Set a random seed
 set.seed(129)
@@ -77,13 +81,16 @@ nonvars = c("PassengerId","Name","Ticket","Cabin")
 full2 = full[,!(names(full) %in% nonvars)]
 str(full2)
 
-convert.vars <- c('Pclass','Sex','Embarked','Title')
+convert.vars <- c('Pclass','Sex','Embarked','Title', 'AgeBin')
 
 full2[convert.vars] <- lapply(full2[convert.vars], function(x) as.numeric(x))
 
 # Get back to train data set
+train1 <- full[!is.na(full$Survived),!(names(full) %in% nonvars)]
+test1 <- full[is.na(full$Survived),!(names(full) %in% nonvars)]
 train2 <- full2[!is.na(full2$Survived),]
 test2 <- full2[is.na(full2$Survived),]
 
-# Correlation matrix
+# Structure & Correlation matrix
+str(train2)
 cor(train2)
