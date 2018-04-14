@@ -1,6 +1,8 @@
 # Load train and test csv files from working directory
 # Using Amelia package visualize where we need imputation
 
+#setwd("~/Stats2_Proj2/")
+
 par(mfrow=c(1,2))
 
 train <- read.csv('Data/train.csv') # Reading from location after clone
