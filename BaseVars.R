@@ -39,6 +39,22 @@ full$Title[full$Title %in% uncommon]  <- 'uncommon'
 # Reduced to 5 levels for Factor Title
 table(full$Sex, full$Title)
 
+# Handle the null Fare in Test
+# The passenger departed from S and had Pclass = 3, lets find an appropriate value
+# Replace missing fare value with median fare for class/embarkment
+nullFare = full[is.na(full$Fare),] #1044
+
+ggplot(full[full$Pclass == '3' & full$Embarked == 'S', ], aes(x = Fare)) +
+  geom_density(fill = '#99d6ff', alpha=0.4) + 
+  geom_vline(aes(xintercept=median(Fare, na.rm=T)),colour='red', linetype='dashed', lwd=1) +
+  scale_x_continuous(breaks = seq(0,70,10), labels=dollar_format()) +
+  ggtitle("Density of Ticket Fare for Embarked = S and Pclass = 3",
+          subtitle = paste0("Median Fare: $", 
+          median(full[full$Pclass == '3' & full$Embarked == 'S', ]$Fare, na.rm=T))) +
+  theme_few()
+
+full$Fare[1044] <- median(full[full$Pclass == '3' & full$Embarked == 'S', ]$Fare, na.rm = TRUE) # $8.05
+
 # Using mice package impute values for Age that are missing
 sum(is.na(train$Age)) # 177 missing values
 sum(is.na(full$Age))  # 263 missing values in both train and test
