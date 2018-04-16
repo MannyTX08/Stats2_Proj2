@@ -59,25 +59,6 @@ full$Fare[1044] <- median(full[full$Pclass == '3' & full$Embarked == 'S', ]$Fare
 sum(is.na(train$Age)) # 177 missing values
 sum(is.na(full$Age))  # 263 missing values in both train and test
 
-# Create Age as a categorical variable
-#   Be sure to run this BEFORE imputing with mice and rf
-full$AgeBin<-addNA(cut(full$Age, seq(0, 90, by=10)))
-#full$AgeBin[10:35]
-l<-levels(full$AgeBin)[-(length(levels(full$AgeBin)))]
-#l
-#    replace <NA> with 'unknown'
-levels(full$AgeBin)<-c(l, 'unknown')
-full$AgeBin[10:35]
-
-# Create a family = siblings + parents/children
-# -Possibly for dimension reducing
-full$Family = full$Parch + full$SibSp
-
-# Make variables factors into factors
-factor_vars <- c('PassengerId','Pclass','Sex','Embarked','Title', 'AgeBin')
-
-full[factor_vars] <- lapply(full[factor_vars], function(x) as.factor(x))
-
 # Set a random seed
 set.seed(129)
 
@@ -97,6 +78,27 @@ full$Age <- mice_output$Age
 
 # Show new number of missing Age values is now 0
 sum(is.na(full$Age))
+
+# Create Age as a categorical variable
+full$AgeBin <- cut(full$Age, seq(0, 90, by=3))
+levels(full$AgeBin) <- c(rep("6 or less", 2), rep("(7 - 63]", 19), rep("Over 63", 9))
+
+#full$AgeBin <- cut(full$Age, seq(0, 80, by=10))
+#full$AgeBin[10:35]
+# l <- levels(full$AgeBin)[-(length(levels(full$AgeBin)))]
+# #l
+# #    replace <NA> with 'unknown'
+#levels(full$AgeBin)<-c(l, 'unknown')
+summary(full$AgeBin)
+
+# Create a family = siblings + parents/children
+# -Possibly for dimension reducing
+full$Family = full$Parch + full$SibSp
+
+# Make variables factors into factors
+factor_vars <- c('PassengerId','Pclass','Sex','Embarked','Title', 'AgeBin')
+
+full[factor_vars] <- lapply(full[factor_vars], function(x) as.factor(x))
 
 # Create DF of independent/dependent variables
 nonvars = c("PassengerId","Name","Ticket","Cabin")

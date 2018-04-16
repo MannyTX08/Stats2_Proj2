@@ -27,3 +27,5 @@ source('BaseVars.R', echo=TRUE)
 source('KaggelSubmission.R', echo=TRUE)
 #OUTPUT: TitanicLogKaggel     CLEAN DATA STORED IN WORKSPACE, KAGGEL SUBMISSION
 #OUTPUT: titanic_output.csv   OUTPUT FILE FOR KAGGEL SUBMISSION
+
+source('TitanicR.R', echo=TRUE)

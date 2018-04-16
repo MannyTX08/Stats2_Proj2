@@ -15,4 +15,4 @@ Kaggel$Survived <- ifelse(fittedresults > 0.5, 1, 0)
 
 write.csv(Kaggel, file = 'titanic_output.csv', row.names = F)
 
-# Score is 0.75598 out of 1
+
