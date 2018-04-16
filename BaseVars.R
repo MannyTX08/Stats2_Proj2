@@ -118,3 +118,5 @@ test2 <- full2[is.na(full2$Survived),]
 # Structure & Correlation matrix
 str(train2)
 cor(train2)
+
+par(mfrow=c(1,1))
