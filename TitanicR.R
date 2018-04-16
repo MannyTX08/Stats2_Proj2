@@ -131,7 +131,7 @@ print(paste('Accuracy',1-misClasificError)) # 83.240 %
 # Create ROC curves
 pr <- prediction(fittedresults, test3$Survived)
 prf <- performance(pr, measure = "tpr", x.measure = "fpr")
-plot(prf)
+plot(prf, lwd=2, colorize=TRUE)
 
 # Ref line indicating poor performance, 50/50
 segments(0, 0,1,1)
