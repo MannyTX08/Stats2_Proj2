@@ -1,15 +1,4 @@
-# Load packages
-
-load.lib = c("ggplot2","glmnet","ROCR")
-
-install.lib = load.lib[!load.lib %in% installed.packages()]
-for(lib in install.lib){
-  install.packages(lib,dependences=TRUE)
-} 
-
-suppressMessages(sapply(load.lib,require,character=TRUE))
-
-# split the training data into a secondary test (not Kaggle)
+# split the training data into a secondary test (not Kaggel)
 set.seed(100) # set seed so that same sample can be reproduced in future
 
 # now selecting 80% of data as sample from total 'n' rows of the data  

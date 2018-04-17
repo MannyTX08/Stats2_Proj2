@@ -1,5 +1,5 @@
 # Load necessary packages and ensure they are active
-load.lib = c("randomForest","ggplot2","ggthemes","mice","scales","dplyr","Amelia","ROCR", "boot", "bestglm","corrplot")
+load.lib = c("randomForest","ggplot2","ggthemes","mice","scales","dplyr","Amelia","ROCR","glmnet","boot","bestglm","corrplot")
 
 install.lib = load.lib[!load.lib %in% installed.packages()]
 for(lib in install.lib){
