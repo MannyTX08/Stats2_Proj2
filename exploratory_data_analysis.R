@@ -238,13 +238,15 @@ summ.percent.by(AgeBin3,
                 main="Proportion Survived by AgeBin", 
                 xname='Age of Passenger (after imputation)', yname="Survived")
 
-AgeBin3<-cut(train1$Age, seq(0, 90, by=10))
+AgeBin3<-cut(train1$Age, seq(0, 80, by=10))
 #levels(AgeBin3)<-c(rep("6 or less", 2), rep("(7 - 63]", 19), rep("Over 63", 9))
 
 summ.percent.by(AgeBin3, 
                 train1$Survived, 
-                main="Proportion Survived by AgeBin", 
+                main="Proportion Survived by Age (10 Year Increments)", 
                 xname='Age of Passenger (after imputation)', yname="Survived")
+
+
 
 
 hist(train$Age[train$Survived == 1], breaks=seq(0,100, by=5))
@@ -411,3 +413,53 @@ summary(test[,"Embarked"])
 summ.percent.by(train1$Embarked, train1$Survived, main="Proportion Survived by Port", 
                 xname='Port of Embarkation', yname="Survived")
 
+############################
+## SIBSP
+############################
+
+summary(train[,"SibSp"])
+summary(test[,"SibSp"])
+
+#   Dual Histograms
+
+hist.by(train$SibSp, train$Survived, 
+        main="Histograms of Siblings/Spouses by Survival", ymax=400, breaks=10, 
+        xname='SibSp', yname="Survived")
+
+
+summ.percent.by(train$SibSp, train1$Survived, main="Proportion Survived by SibSp", 
+                xname='SibSp', yname="Survived")
+
+############################
+## PARCH
+############################
+
+summary(train[,"Parch"])
+summary(test[,"Parch"])
+
+#   Dual Histograms
+
+hist.by(train$Parch, train$Survived, 
+        main="Histograms of Parents/Children by Survival", ymax=450, breaks=10, 
+        xname='Parch', yname="Survived")
+
+
+summ.percent.by(train$Parch, train1$Survived, main="Proportion Survived by Parch", 
+                xname='Parch', yname="Survived")
+
+############################
+## FAMILY
+############################
+
+summary(train1[,"Family"])
+summary(test1[,"Family"])
+
+#   Dual Histograms
+
+hist.by(train1$Family, train$Survived, 
+        main="Histograms of Family Size by Survival", ymax=500, breaks=11, 
+        xname='Family', yname="Survived")
+
+
+summ.percent.by(train1$Family, train1$Survived, main="Proportion Survived by Family", 
+                xname='Family', yname="Survived")
