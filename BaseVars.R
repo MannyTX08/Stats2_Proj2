@@ -117,6 +117,42 @@ test2 <- full2[is.na(full2$Survived),]
 
 # Structure & Correlation matrix
 str(train2)
-cor(train2)
+corMatrix = cor(train2)
+corMatrix
+
+write.csv(corMatrix, "CorrelationMatrix.csv")
 
 par(mfrow=c(1,1))
+
+# Correlogram
+# corrplot(corMatrix, type = "upper")
+# corrplot(corMatrix, type = "upper", method = "number", order = "original",
+#         diag = FALSE, tl.pos = "td") #, cl.pos = "n")
+
+# http://www.sthda.com/english/wiki/visualize-correlation-matrix-using-correlogram
+
+cor.mtest <- function(mat, ...) {
+  mat <- as.matrix(mat)
+  n <- ncol(mat)
+  p.mat<- matrix(NA, n, n)
+  diag(p.mat) <- 0
+  for (i in 1:(n - 1)) {
+    for (j in (i + 1):n) {
+      tmp <- cor.test(mat[, i], mat[, j], ...)
+      p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+    }
+  }
+  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+  p.mat
+}
+# matrix of the p-value of the correlation
+p.mat <- cor.mtest(train2)
+
+corrplot(corMatrix, method="color",  
+         type="upper", order="hclust", 
+         addCoef.col = "black", # Add coefficient of correlation
+         tl.col="black", tl.srt=45, #Text label color and rotation
+         p.mat = p.mat, sig.level = 0.01, insig = "blank", 
+         diag=FALSE 
+)
+
