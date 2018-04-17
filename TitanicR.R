@@ -42,11 +42,11 @@ print(paste('Accuracy',1-misClasificError)) # Accuracy = 84.358%
 # Fit model again with only the variables that were significant in the full model
 # Pclass, Sex, SibSp, Parch, Embarked, AgeBin
 
-# Logistic regression full model
+# Logistic regression reduced model
 TitanicModelRed = glm(Survived ~ Pclass + Sex + SibSp + Parch + Embarked + AgeBin, data = train3, family = binomial(link='logit'))
 summary(TitanicModelRed)
 
-# Test predictive capability of full model
+# Test predictive capability of reduced model
 fittedresults2 <- predict(TitanicModelRed, newdata=test3, type='response')
 
 # count any NAs in the fittedresults
