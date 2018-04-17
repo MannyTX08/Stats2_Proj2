@@ -1,9 +1,9 @@
 # Load necessary packages and ensure they are active
-load.lib = c("randomForest","ggplot2","ggthemes","mice","scales","dplyr","Amelia","ROCR", "boot", "bestglm")
+load.lib = c("randomForest","ggplot2","ggthemes","mice","scales","dplyr","Amelia","ROCR", "boot", "bestglm","corrplot")
 
 install.lib = load.lib[!load.lib %in% installed.packages()]
 for(lib in install.lib){
-  install.packages(lib,dependences=TRUE)
+  install.packages(lib,dependencies=TRUE)
 } 
 
 suppressMessages(sapply(load.lib,require,character=TRUE))
