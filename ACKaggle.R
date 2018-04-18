@@ -1,5 +1,5 @@
 ##########
-# 
+# KAGGLE SUBMISSION GENERATOR
 ##########
 
 set.seed(200) # set seed so that same sample can be reproduced in future
@@ -91,7 +91,7 @@ runcvglms<-function(notvars="", Name="KaggleSubmit", nfold=10, type='mse', lambd
   
   ACkaggle<-cbind.data.frame("PassengerID"=test$PassengerId, "Survived"=round(p3))
   names(ACkaggle)<-c("PassengerID", "Survived")
-  write.csv(ACkaggle, file=paste("~/", Name, ".csv", sep=''), row.names = FALSE)
+  write.csv(ACkaggle, file=paste("~/Stats2_Proj2/Data/", Name, ".csv", sep=''), row.names = FALSE)
   ## Kaggle score of 0.78947
   
 }
