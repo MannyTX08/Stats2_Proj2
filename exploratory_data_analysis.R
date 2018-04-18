@@ -321,32 +321,32 @@ hist.by(train$Fare[train$Fare < 150], train$Survived[train$Fare < 150],
 
 #   Percentages by Fare
 
-FareBin<-cut(train$Fare, seq(0, 60, by=2))
+FareBin<-cut(train$Fare, seq(0, 70, by=2))
 l<-levels(FareBin)[-(length(levels(FareBin)))]
-levels(FareBin)<-c(l, '> $58')
+levels(FareBin)<-c(l, '> $68')
 
 summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
                 xname='Ticket Price', yname="Survived")
 
 
-FareBin<-cut(train$Fare, seq(0, 60, by=3))
+FareBin<-cut(train$Fare, seq(0, 80, by=3))
 l<-levels(FareBin)[-(length(levels(FareBin)))]
-levels(FareBin)<-c(l, '> $57')
+levels(FareBin)<-c(l, '> $77')
 
 summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
                 xname='Ticket Price', yname="Survived")
 
 
-FareBin<-cut(train$Fare, seq(0, 60, by=4))
+FareBin<-cut(train$Fare, seq(0, 90, by=4))
 l<-levels(FareBin)[-(length(levels(FareBin)))]
-levels(FareBin)<-c(l, '> $56')
+levels(FareBin)<-c(l, '> $84')
 
 summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
                 xname='Ticket Price', yname="Survived")
 
-FareBin<-cut(train$Fare, seq(0, 60, by=5))
+FareBin<-cut(train$Fare, seq(0, 100, by=5))
 l<-levels(FareBin)[-(length(levels(FareBin)))]
-levels(FareBin)<-c(l, '> $55')
+levels(FareBin)<-c(l, '> $95')
 
 summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
                 xname='Ticket Price', yname="Survived")
@@ -360,24 +360,41 @@ summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare",
                 xname='Ticket Price', yname="Survived")
 
 
-FareBin<-cut(train$Fare, seq(0, 63, by=7))
+FareBin<-cut(train$Fare, seq(0, 90, by=7))
 l<-levels(FareBin)[-(length(levels(FareBin)))]
-levels(FareBin)<-c(l, '> $56')
+levels(FareBin)<-c(l, '> $84')
 
 summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
                 xname='Ticket Price', yname="Survived")
 
 
-FareBin<-cut(train$Fare, seq(0, 72, by=8))
+FareBin<-cut(train$Fare, seq(0, 88, by=8))
 l<-levels(FareBin)[-(length(levels(FareBin)))]
-levels(FareBin)<-c(l, '> $64')
+levels(FareBin)<-c(l, '> $80')
 
 summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
                 xname='Ticket Price', yname="Survived")
 
-FareBin<-cut(train$Fare, seq(0, 64, by=9))
+
+FareBin<-cut(train$Fare, seq(0, 90, by=9))
 l<-levels(FareBin)[-(length(levels(FareBin)))]
-levels(FareBin)<-c(l, '> $63')
+levels(FareBin)<-c(l, '> $81')
+
+summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
+                xname='Ticket Price', yname="Survived")
+
+
+FareBin<-cut(train$Fare, seq(0, 120, by=10))
+l<-levels(FareBin)[-(length(levels(FareBin)))]
+levels(FareBin)<-c(l, '> $110')
+
+summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
+                xname='Ticket Price', yname="Survived")
+
+
+FareBin<-cut(train$Fare, seq(0, 240, by=12))
+l<-levels(FareBin)[-(length(levels(FareBin)))]
+levels(FareBin)<-c(l, '> $238')
 
 summ.percent.by(FareBin, train1$Survived, main="Proportion Survived by Fare", 
                 xname='Ticket Price', yname="Survived")
