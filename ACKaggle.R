@@ -56,7 +56,7 @@ test3$uncommon= (test3$Title == "uncommon")*1
 ###### Create Function
 ###### Assumes train3
 
-runcvglms<-function(notvars="", Name="KaggleSubmit", nfold=10, type='mse'){
+runcvglms<-function(notvars="", Name="KaggleSubmit", nfold=10, type='mse', lambda="lambda.min"){
   
   #Some glm functions work better with matrices
   Xy<-cbind.data.frame( train3[, !(names(train3) %in% notvars)],
@@ -76,12 +76,15 @@ runcvglms<-function(notvars="", Name="KaggleSubmit", nfold=10, type='mse'){
   plot(testglm3, main="MSE reduction curve")
   
   
-  print(coef(testglm3, s="lambda.min"))
-  print(min(testglm3$cvm))
+  print(coef(testglm3, s=lambda))
+  #print(min(testglm3$cvm))
+  cvm<-if(lambda=="lambda.min"){testglm3$cvm[which(testglm3$lambda == testglm3$lambda.min)]}
+                               {testglm3$cvm[which(testglm3$lambda == testglm3$lambda.1se)]}
+  print(cvm)
   
   #  Exclude old columns 
   T1<-test3[, !(names(test3) %in% notvars)]
-  p3<-predict(testglm3, as.matrix(T1), s="lambda.min", type="response")
+  p3<-predict(testglm3, as.matrix(T1), s=lambda, type="response")
   # str(X)
   # str(T1)
   # str(p3)
@@ -122,3 +125,9 @@ cv=cv.glm(data=train4, glmfit=TitanicLog2, K=10)
 #ls(cv)
 cv["delta"]
 
+lambda="lambda.1se"
+lambda="lambda.min"
+paste('Accuracy',1-misClasificError)
+
+if(lambda=="lambda.min"){print(glmnetfit$cvm[which(glmnetfit$lambda == glmnetfit$lambda.min)])}
+                        {print(glmnetfit$cvm[which(glmnetfit$lambda == glmnetfit$lambda.1se)])}

@@ -21,6 +21,9 @@ test3  <- train1[-sample, ]
 # Xy<-cbind.data.frame( M, "Survived"=train3[, "Survived"]  )
 
 # Logistic regression full model
+TitanicModelFull = glm(Survived ~ Pclass + Sex +  Age + Family + Fare + Embarked + Title + AgeBin, data = train3, family = binomial(link='logit'))
+summary(TitanicModelFull)
+
 TitanicModelFull = glm(Survived ~ Pclass + Sex +  Age + SibSp + Parch + Fare + Embarked + Title + AgeBin, data = train3, family = binomial(link='logit'))
 summary(TitanicModelFull)
 
@@ -37,7 +40,7 @@ fittedresults <- ifelse(fittedresults > 0.5, 1, 0)
 misClasificError <- mean(fittedresults != test3$Survived, na.rm=TRUE) # this adds up all the instances of misclassification then divides by total (via mean)
 
 # print the output as 100% - error
-print(paste('Accuracy',1-misClasificError)) # Accuracy = 84.358%
+print(paste('Accuracy',1-misClasificError)) # Accuracy = 81.56%
 
 ##########
 # Fit model again with only the variables that were significant in the full model
@@ -66,26 +69,26 @@ fittedresults2 <- ifelse(fittedresults2 > 0.5, 1, 0)
 misClasificError2 <- mean(fittedresults2 != test3$Survived, na.rm=TRUE) # this adds up all the instances of misclassification then divides by total (via mean)
 
 # print the output as 100% - error
-print(paste('Accuracy',1-misClasificError2)) # Accuracy = 83.240%
+print(paste('Accuracy',1-misClasificError2)) # Accuracy = 82.681%
 
 ######################
 # Using glmnet and LASSO
 # Isolate the binary response "Survived" from the training data
-GLMTrain.y <- train3$Survived
-GLMTrain.y <- as.factor(as.character(GLMTrain.y))
-
-# create train data set while removing "Survived" from the training data
-GLMTrain.x <- train3[,!(colnames(train3) == "Survived")]
-
-# isolate categorical/factors from the continuous features, create dummy variable matrix for all factors
-GLMTrain.xfactors <- model.matrix(GLMTrain.y ~ GLMTrain.x$Pclass + GLMTrain.x$Sex + GLMTrain.x$SibSp + GLMTrain.x$Parch + GLMTrain.x$Embarked + GLMTrain.x$Title + GLMTrain.x$AgeBin)[, -1]
-
-# remove categorical/factors from GLMTrain.x as they will be added back in the form of dummy variable matrix from above
-dropcolsGLM <- c("Pclass", "Sex", "SibSp", "Parch", "Embarked", "Title", "AgeBin") 
-GLMTrain.x <- GLMTrain.x[,!(colnames(GLMTrain.x) %in% dropcolsGLM)]
-
-# combine GLMTrain.x continuous variables with GLMTrain.xfactors dummy variable matrix, then converting whole thing to a matrix for glmnet
-GLMTrain.x <- as.matrix(data.frame(GLMTrain.x, GLMTrain.xfactors))
+# GLMTrain.y <- train3$Survived
+# GLMTrain.y <- as.factor(as.character(GLMTrain.y))
+# 
+# # create train data set while removing "Survived" from the training data
+# GLMTrain.x <- train3[,!(colnames(train3) == "Survived")]
+# 
+# # isolate categorical/factors from the continuous features, create dummy variable matrix for all factors
+# GLMTrain.xfactors <- model.matrix(GLMTrain.y ~ GLMTrain.x$Pclass + GLMTrain.x$Sex + GLMTrain.x$SibSp + GLMTrain.x$Parch + GLMTrain.x$Embarked + GLMTrain.x$Title + GLMTrain.x$AgeBin)[, -1]
+# 
+# # remove categorical/factors from GLMTrain.x as they will be added back in the form of dummy variable matrix from above
+# dropcolsGLM <- c("Pclass", "Sex", "SibSp", "Parch", "Embarked", "Title", "AgeBin") 
+# GLMTrain.x <- GLMTrain.x[,!(colnames(GLMTrain.x) %in% dropcolsGLM)]
+# 
+# # combine GLMTrain.x continuous variables with GLMTrain.xfactors dummy variable matrix, then converting whole thing to a matrix for glmnet
+# GLMTrain.x <- as.matrix(data.frame(GLMTrain.x, GLMTrain.xfactors))
 
 
 
@@ -190,24 +193,24 @@ text(x = .40, y = .6,paste("AUC = ", round(auc,3), sep = ""))
 ###### ALTERNATE GLM LASSO -- MSE
 ####################################################
 
-######################
-# Using glmnet and LASSO
-# Isolate the binary response "Survived" from the training data
-GLMTrain.y <- train3$Survived
-GLMTrain.y <- as.factor(as.character(GLMTrain.y))
-
-# create train data set while removing "Survived" from the training data
-GLMTrain.x <- train3[,!(colnames(train3) == "Survived")]
-
-# isolate categorical/factors from the continuous features, create dummy variable matrix for all factors
-GLMTrain.xfactors <- model.matrix(GLMTrain.y ~ GLMTrain.x$Pclass + GLMTrain.x$Sex + GLMTrain.x$SibSp + GLMTrain.x$Parch + GLMTrain.x$Embarked + GLMTrain.x$Title + GLMTrain.x$AgeBin)[, -1]
-
-# remove categorical/factors from GLMTrain.x as they will be added back in the form of dummy variable matrix from above
-dropcolsGLM <- c("Pclass", "Sex", "SibSp", "Parch", "Embarked", "Title", "AgeBin") 
-GLMTrain.x <- GLMTrain.x[,!(colnames(GLMTrain.x) %in% dropcolsGLM)]
-
-# combine GLMTrain.x continuous variables with GLMTrain.xfactors dummy variable matrix, then converting whole thing to a matrix for glmnet
-GLMTrain.x <- as.matrix(data.frame(GLMTrain.x, GLMTrain.xfactors))
+# ######################
+# # Using glmnet and LASSO
+# # Isolate the binary response "Survived" from the training data
+# GLMTrain.y <- train3$Survived
+# GLMTrain.y <- as.factor(as.character(GLMTrain.y))
+# 
+# # create train data set while removing "Survived" from the training data
+# GLMTrain.x <- train3[,!(colnames(train3) == "Survived")]
+# 
+# # isolate categorical/factors from the continuous features, create dummy variable matrix for all factors
+# GLMTrain.xfactors <- model.matrix(GLMTrain.y ~ GLMTrain.x$Pclass + GLMTrain.x$Sex + GLMTrain.x$SibSp + GLMTrain.x$Parch + GLMTrain.x$Embarked + GLMTrain.x$Title + GLMTrain.x$AgeBin)[, -1]
+# 
+# # remove categorical/factors from GLMTrain.x as they will be added back in the form of dummy variable matrix from above
+# dropcolsGLM <- c("Pclass", "Sex", "SibSp", "Parch", "Embarked", "Title", "AgeBin") 
+# GLMTrain.x <- GLMTrain.x[,!(colnames(GLMTrain.x) %in% dropcolsGLM)]
+# 
+# # combine GLMTrain.x continuous variables with GLMTrain.xfactors dummy variable matrix, then converting whole thing to a matrix for glmnet
+# GLMTrain.x <- as.matrix(data.frame(GLMTrain.x, GLMTrain.xfactors))
 
 
 

@@ -84,7 +84,7 @@ notvars=c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Parch") #
   
   M<-model.matrix(Survived~., data=Xy)
 
-testglm3<-cv.glmnet(x=as.matrix(X), y, 
+testglm3<-cv.glmnet(x=M, y, 
                    # type.measure = "auc", 
                     family="binomial")
 plot(testglm3, main="MSE reduction curve")
