@@ -9,7 +9,7 @@ train3 <- train2[sample, ]
 test3  <- train2[-sample, ]
 
 # Logistic regression full model
-TitanicModelFull = glm(Survived ~ ., data = train3, family = binomial(link='logit'))
+TitanicModelFull = glm(Survived ~ Pclass + Sex +  Age + SibSp + Parch + Fare + Embarked + Title + AgeBin, data = train3, family = binomial(link='logit'))
 summary(TitanicModelFull)
 
 # Test predictive capability of full model
@@ -32,7 +32,7 @@ print(paste('Accuracy',1-misClasificError)) # Accuracy = 84.358%
 # Pclass, Sex, SibSp, Parch, Embarked, AgeBin
 
 # Logistic regression reduced model
-TitanicModelRed = glm(Survived ~ Pclass + Sex + SibSp + Parch + Embarked + AgeBin, data = train3, family = binomial(link='logit'))
+TitanicModelRed = glm(Survived ~ Pclass + Sex + SibSp + AgeBin, data = train3, family = binomial(link='logit'))
 summary(TitanicModelRed)
 
 # Test predictive capability of reduced model
@@ -48,7 +48,7 @@ fittedresults2 <- ifelse(fittedresults2 > 0.5, 1, 0)
 misClasificError2 <- mean(fittedresults2 != test3$Survived, na.rm=TRUE) # this adds up all the instances of misclassification then divides by total (via mean)
 
 # print the output as 100% - error
-print(paste('Accuracy',1-misClasificError2)) # Accuracy = 83.799%
+print(paste('Accuracy',1-misClasificError2)) # Accuracy = 83.240%
 
 ######################
 # Using glmnet and LASSO
