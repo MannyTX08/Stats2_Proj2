@@ -53,8 +53,8 @@ TitanicModelRed = glm(Survived ~ Pclass + SibSp + Parch + Title, data = train3, 
 summary(TitanicModelRed)
 
 # includes all of title anyway
-TitanicModelRed = glm(Survived ~ Pclass2 + Pclass3 + SibSp + Parch + TitleMr + Titleuncommon, data = train3, family = binomial(link='logit'))
-summary(TitanicModelRed)
+# TitanicModelRed = glm(Survived ~ Pclass2 + Pclass3 + SibSp + Parch + TitleMr + Titleuncommon, data = train3, family = binomial(link='logit'))
+# summary(TitanicModelRed)
 
 # Test predictive capability of reduced model
 fittedresults2 <- predict(TitanicModelRed, newdata=test3, type='response')
