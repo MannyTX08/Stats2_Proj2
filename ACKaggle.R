@@ -90,16 +90,16 @@ runcvglms<-function(notvars="", Name="KaggleSubmit", nfold=10, type='mse', lambd
   
   ACkaggle<-cbind.data.frame("PassengerID"=test$PassengerId, "Survived"=round(p3))
   names(ACkaggle)<-c("PassengerID", "Survived")
-  write.csv(ACkaggle, file=paste("~/Stats2_Proj2/Data/", Name, ".csv", sep=''), row.names = FALSE)
+  #write.csv(ACkaggle, file=paste("~/Stats2_Proj2/Data/", Name, ".csv", sep=''), row.names = FALSE)
   ## Kaggle score of 0.78947
   
 }
 
 
 runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_class_min", nfold=10, type='class') # Kaggle Score 0.77990
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_mae_min", nfold=10, type='mse') # Kaggle Score 0.77990
+#runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_mae_min", nfold=10, type='mse') # Kaggle Score 0.77990
 runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_class_1se", nfold=10, type='class', lambda="lambda.1se") # Kaggle Score 0.77990
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_mse_1se", nfold=10, type='mse', lambda="lambda.1se") # Kaggle Score 0.77990
+#runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_mse_1se", nfold=10, type='mse', lambda="lambda.1se") # Kaggle Score 0.77990
 #runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_auc", nfold=10, type='auc') # Kaggle Score 0.77990
 
 
@@ -113,6 +113,11 @@ set.seed(100) # set seed so that same sample can be reproduced in future
 
 # now selecting 80% of data as sample from total 'n' rows of the data  
 sample <- sample.int(n=nrow(train1), size=floor(.80*nrow(train1)), replace=FALSE)
+
+# subset the data using the sample integer vector created above
+# keep factors, not numeric 
+train3 <- train1[sample, ]
+test3  <- train1[-sample, ]
 
 # Logistic regression full model
 TitanicModelFull = glm(Survived ~ Pclass + Sex +  Age + Family + Fare + Embarked + Title + AgeBin, data = train3, family = binomial(link='logit'))
@@ -190,43 +195,3 @@ names(MTXKaggle)<-c("PassengerID", "Survived")
 write.csv(MTXKaggle, file=paste("~/Stats2_Proj2/Data/", 'MTXKaggle', ".csv", sep=''), row.names = FALSE)
 
 
-
-#####################################################################################
-###############   ARCHIVE 
-#####################################################################################
-
-
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_class", nfold=10, type='class') # Kaggle Score 0.77990
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_mae", nfold=10, type='mae') # Kaggle Score 0.77990
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_mse", nfold=10, type='mse') # Kaggle Score 0.77990
-#runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_auc", nfold=10, type='auc') # Kaggle Score 0.77990
-
-
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Parch"), "ACKaggle", nfold=10) # Kaggle Score 0.77990
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "SibSp"), "ACKaggle2", nfold=10) # Kaggle Score 0.77990
-runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle3", nfold=10) # Kaggle Score 0.77990
-
-##  Since no variables were 'knocked out' at lambda.min...
-##  Check optimal paramters
-
-train4 <- train3[ !(names(train3) %in% c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Family", "Miss"))]
-test4  <- test3[ !(names(test3) %in% c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family", "Miss"))]
-
-# Logistic regression model
-TitanicLog2 = glm(Survived ~ ., data = train4, family = binomial(link='logit'))
-summary(TitanicLog2)
-
-p=predict(TitanicLog2, newdata=test4, type='response')
-ACkaggle<-cbind.data.frame("PassengerID"=test$PassengerId, "Survived"=round(p))
-write.csv(ACkaggle, file="~/ACKaggle4.csv", row.names = FALSE) # Kaggle Score of 0.77990
-
-cv=cv.glm(data=train4, glmfit=TitanicLog2, K=10)
-#ls(cv)
-cv["delta"]
-
-lambda="lambda.1se"
-lambda="lambda.min"
-paste('Accuracy',1-misClasificError)
-
-if(lambda=="lambda.min"){print(glmnetfit$cvm[which(glmnetfit$lambda == glmnetfit$lambda.min)])}
-                        {print(glmnetfit$cvm[which(glmnetfit$lambda == glmnetfit$lambda.1se)])}
