@@ -73,8 +73,9 @@ runcvglms<-function(notvars="", Name="KaggleSubmit", nfold=10, type='mse', lambd
   M<-model.matrix(Survived~., data=Xy)
   
   testglm3<-cv.glmnet(x=as.matrix(X), y, type.measure = type, family="binomial")
-  plot(testglm3, main="MSE reduction curve")
-  
+  par(mar=c(5, 4, 5, 2) + 0.1)
+  plot(testglm3, main="Misclassification Reduction Curve")
+  par(mar=c(5, 4, 4, 2) + 0.1)
   
   print(coef(testglm3, s=lambda))
   #print(min(testglm3$cvm))
@@ -102,96 +103,8 @@ runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"
 #runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_mse_1se", nfold=10, type='mse', lambda="lambda.1se") # Kaggle Score 0.77990
 #runcvglms(c("Pclass", "Sex", "Embarked", "Title", "AgeBin", "Survived", "Family"), "ACKaggle_auc", nfold=10, type='auc') # Kaggle Score 0.77990
 
+### NOTE: even with a fixed seed, rerunning the same functions will give you different results.
+########################## ALWAYS RUN AFTER TIANTICR2 ################################
 
-
-
-##########
-# Fit model again with only the variables that were significant in the full model
-
-# split the training data into a secondary test (not Kaggel)
-set.seed(100) # set seed so that same sample can be reproduced in future
-
-# now selecting 80% of data as sample from total 'n' rows of the data  
-sample <- sample.int(n=nrow(train1), size=floor(.80*nrow(train1)), replace=FALSE)
-
-# subset the data using the sample integer vector created above
-# keep factors, not numeric 
-train3 <- train1[sample, ]
-test3  <- train1[-sample, ]
-
-# Logistic regression full model
-TitanicModelFull = glm(Survived ~ Pclass + Sex +  Age + Family + Fare + Embarked + Title + AgeBin, data = train3, family = binomial(link='logit'))
-summary(TitanicModelFull)
-
-TitanicModelFull = glm(Survived ~ Pclass + Sex +  Age + SibSp + Parch + Fare + Embarked + Title + AgeBin, data = train3, family = binomial(link='logit'))
-summary(TitanicModelFull)
-
-# Test predictive capability of full model
-fittedresults <- predict(TitanicModelFull, newdata=test3, type='response')
-
-# count any NAs in the fittedresults
-sum(is.na(fittedresults))
-
-# if P(y=1|X) > 0.5 then y = 1 otherwise y=0
-fittedresults <- ifelse(fittedresults > 0.5, 1, 0)
-
-# calculate the mean of the fitted results that don't equal the observed result - IGNORE NAs
-misClasificError <- mean(fittedresults != test3$Survived, na.rm=TRUE) # this adds up all the instances of misclassification then divides by total (via mean)
-
-# print the output as 100% - error
-print(paste('Accuracy',1-misClasificError)) # Accuracy = 81.56%
-
-### confirm model correctness above
-# print the output as 100% - error
-# Test predictive capability of reduced model
-fittedresultsF <- predict(TitanicModelFull, newdata=test1, type='response')
-
-# count any NAs in the fittedresults
-sum(is.na(fittedresults3))
-
-# if P(y=1|X) > 0.5 then y = 1 otherwise y=0
-fittedresultsF <- ifelse(fittedresultsF > 0.5, 1, 0)
-
-MTXKaggle<-cbind.data.frame("PassengerID"=test$PassengerId, "Survived"=round(p3))
-names(MTXKaggle)<-c("PassengerID", "Survived")
-write.csv(MTXKaggle, file=paste("~/Stats2_Proj2/Data/", 'MTXKaggleF', ".csv", sep=''), row.names = FALSE)
-
-
-
-
-# Logistic regression reduced model
-# TitanicModelRed = glm(Survived ~ Pclass + Sex + SibSp + AgeBin, data = train3, family = binomial(link='logit'))
-# summary(TitanicModelRed)
-TitanicModelRed = glm(Survived ~ Pclass + SibSp + Parch + Title, data = train3, family = binomial(link='logit'))
-summary(TitanicModelRed)
-
-# Test predictive capability of reduced model
-fittedresults2 <- predict(TitanicModelRed, newdata=test3, type='response')
-
-# count any NAs in the fittedresults
-sum(is.na(fittedresults2))
-
-# if P(y=1|X) > 0.5 then y = 1 otherwise y=0
-fittedresults2 <- ifelse(fittedresults2 > 0.5, 1, 0)
-
-# calculate the mean of the fitted results that don't equal the observed result - IGNORE NAs
-misClasificError2 <- mean(fittedresults2 != test3$Survived, na.rm=TRUE) # this adds up all the instances of misclassification then divides by total (via mean)
-print(paste('Accuracy',1-misClasificError2)) # Accuracy = 82.681%
-
-
-### confirm model correctness above
-# print the output as 100% - error
-# Test predictive capability of reduced model
-fittedresults3 <- predict(TitanicModelRed, newdata=test1, type='response')
-
-# count any NAs in the fittedresults
-sum(is.na(fittedresults3))
-
-# if P(y=1|X) > 0.5 then y = 1 otherwise y=0
-fittedresults3 <- ifelse(fittedresults3 > 0.5, 1, 0)
-
-MTXKaggle<-cbind.data.frame("PassengerID"=test$PassengerId, "Survived"=round(p3))
-names(MTXKaggle)<-c("PassengerID", "Survived")
-write.csv(MTXKaggle, file=paste("~/Stats2_Proj2/Data/", 'MTXKaggle', ".csv", sep=''), row.names = FALSE)
 
 
